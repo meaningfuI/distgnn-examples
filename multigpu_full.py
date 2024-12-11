@@ -8,6 +8,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.distributed as dist
 import os
+import argparse
 
 graph_name = 'reddit'
 
@@ -319,7 +320,14 @@ def run(proc_id, devices, n_feat, n_hidden, n_class, n_layers):
         )
 
 if __name__ == '__main__':
-    num_gpus = 4
+
+    parser = argparse.ArgumentParser(description='distGNN')
+    parser.add_argument("--n-partitions", "--n_partitions", type=int, default=1,
+                        help="the number of partitions")
+    
+    args = parser.parse_args()
+
+    num_gpus = args.n_partitions
     
     #载入reddit数据集
     from dgl.data import RedditDataset
